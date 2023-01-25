@@ -50,63 +50,10 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
     let el = browser.menus.getTargetElement(info.targetElementId);
     switch (info.menuItemId) {
         case "selectDemAll.tickAll":
-            browser.tabs.executeScript(tab.id, {
-                frameId: info.frameId,
-                code: `var el = browser.menus.getTargetElement(${info.targetElementId});
-                    var options = lookUp(el, 0)
-                    if(options[0].tagName === "OPTION") {
-                        options.forEach((option) => {
-                            option.selected = true;
-                        });
-                    } else if (options[0].tagName === "INPUT") {
-                        options.forEach((option) => {
-                            option.checked = true;
-                        });
-                    }
-                    
-                    function lookUp(el, depth) {
-                        var options = el.parentElement.querySelectorAll('option')
-                        if (options.length <= 0) options = el.parentElement.querySelectorAll('input[type="checkbox"]');
-                        if (options.length > 1) return options
-                        if (depth> 2) return [];
-                        return lookUp(el.parentElement, depth+1)
-                    }
-                `,
-              });
+            browser.tabs.sendMessage(tab.id, { action: 'selectDemAll.tickAll', targetElementId: info.targetElementId });
             break;
         case "selectDemAll.inverseSelection":
-            browser.tabs.executeScript(tab.id, {
-                frameId: info.frameId,
-                code: `var el = browser.menus.getTargetElement(${info.targetElementId});
-                    var options = lookUp(el, 0)
-                    if(options[0].tagName === "OPTION") {
-                        options.forEach((option) => {
-                            if (option.selected) {
-                                option.selected = false;
-                            } else {
-                                option.selected = true;
-                            }
-                        });
-                    } else if (options[0].tagName === "INPUT") {
-                        options.forEach((option) => {
-                            if (option.checked) {
-                                option.checked = false;
-                            } else {
-                                option.checked = true;
-                            }
-
-                        });
-                    }
-                    
-                    function lookUp(el, depth) {
-                        var options = el.parentElement.querySelectorAll('option')
-                        if (options.length <= 0) options = el.parentElement.querySelectorAll('input[type="checkbox"]');
-                        if (options.length > 1) return options
-                        if (depth> 2) return [];
-                        return lookUp(el.parentElement, depth+1)
-                    }
-                `,
-                });
+            browser.tabs.sendMessage(tab.id, { action: 'selectDemAll.inverseSelection', targetElementId: info.targetElementId });
             break;
     }
 });
