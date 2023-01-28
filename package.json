@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "jest": "^29.4.1",
+    "jest-environment-jsdom": "^29.4.1",
+    "jest-webextension-mock": "^3.8.8"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-webextension-mock"
+    ],
+    "testEnvironment": "jsdom",
+    "verbose": true
+  }
+}
